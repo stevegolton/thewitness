@@ -108,7 +108,7 @@ int do_node(struct node* node, struct grid* grid)
 		sbuf_clear();
 
 		// Run through all nodes and print them to the screen buffer
-		while(printnode != NULL)
+		while(NULL !=printnode)
 		{
 			// Switch on the type of node we are dealing with
 			if(grid->start == printnode)
@@ -138,7 +138,7 @@ int do_node(struct node* node, struct grid* grid)
 		{
 			if ((node->nodes[nodeidx] != NULL) && (node->nodes[nodeidx]->route == NULL))
 			{
-				// Temporarially set the route to be this node then call do_node on it
+				// Temporarily set the route to be this node then call do_node on it
 				node->route = node->nodes[nodeidx];
 				solution_count += do_node(node->nodes[nodeidx], grid);
 				node->route = NULL;
