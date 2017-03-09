@@ -29,7 +29,6 @@ bool validate_route(stPUZZLE_Inst_t *puzzle)
 
 // Work through all the connecting nodes starting at a particular node
 // Recursively calls do_node() on all connecting nodes which haven't been visited yet
-// TODO move to solver class
 int PUZZLESOLVER_SolvePuzzle(stPUZZLE_Node_t* node, stPUZZLE_Inst_t *puzzle, bool findone, stSBUF_instance_t *sbuf)
 {
 	int solution_count = 0;
