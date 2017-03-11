@@ -31,3 +31,16 @@
 # Debug files
 *.dSYM/
 *.su
+
+# Eclipse project files
+.project
+.cproject
+.settings/
+
+# CMake artifacts
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+
+# Target
+solver

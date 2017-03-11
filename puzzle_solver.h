@@ -1,9 +1,20 @@
-#ifndef PUZZLE_SOLVER_H_
-#define PUZZLE_SOLVER_H_
+#ifndef PUZZLE_SOLVER_H
+#define PUZZLE_SOLVER_H
 
-#include "puzzle.h"
+#include <memory>
+
 #include "sbuf.h"
+#include "puzzle.h"
 
-int PUZZLESOLVER_SolvePuzzle(stPUZZLE_Node_t* node, stPUZZLE_Inst_t *puzzle, bool findone, stSBUF_instance_t *sbuf);
+class PuzzleSolver
+{
+public:
+	PuzzleSolver(std::shared_ptr<Puzzle> puzzle);
+	void find_one_solution();
+private:
+	bool validate_route();
+	bool follow_route(Node *node);
+	std::shared_ptr<Puzzle> puzzle;
+};
 
-#endif /* PUZZLE_SOLVER_H_ */
+#endif

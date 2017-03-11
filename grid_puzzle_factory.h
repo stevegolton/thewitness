@@ -1,8 +1,17 @@
-#ifndef GRID_PUZZLE_FACTORY_H_
-#define GRID_PUZZLE_FACTORY_H_
+#ifndef GRID_PUZZLE_FACTORY_H
+#define GRID_PUZZLE_FACTORY_H
 
-#include "puzzle.h"
+#include <memory>		// shared_ptr
+#include "puzzle.h"		// Puzzle
 
-stPUZZLE_Inst_t *GRIDPUZZLEFACTORY_MakeGridPuzzle(int cols, int rows);
+class GridPuzzleFactory
+{
+public:
+	GridPuzzleFactory(int cols, int rows);
+	std::shared_ptr<Puzzle> make_puzzle();
+private:
+	int cols;
+	int rows;
+};
 
 #endif /* GRID_PUZZLE_FACTORY_H_ */

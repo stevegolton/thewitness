@@ -1,9 +1,21 @@
-#ifndef PUZZLE_PRINTER_H_
-#define PUZZLE_PRINTER_H_
+#ifndef PUZZLE_PRINTER_H
+#define PUZZLE_PRINTER_H
+
+#include <memory>
 
 #include "puzzle.h"
-#include "sbuf.h"
 
-void PUZZLEPRINTER_PrintPuzzle(stPUZZLE_Inst_t *puzzle, stSBUF_instance_t *sbuf);
+class PuzzlePrinter
+{
+public:
+	PuzzlePrinter(std::shared_ptr<Puzzle> puzzle_to_print);
+	~PuzzlePrinter();
+	void print_puzzle();
+private:
+	std::shared_ptr<Puzzle> puzzle;
+	char *sbuf;
+	int x_max;
+	int y_max;
+};
 
-#endif /* PUZZLE_PRINTER_H_ */
+#endif
