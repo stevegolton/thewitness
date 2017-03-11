@@ -9,7 +9,6 @@
 
 #include "puzzle_printer.h"
 #include "puzzle.h"
-#include "sbuf.h"
 
 PuzzlePrinter::PuzzlePrinter(std::shared_ptr<Puzzle> puzzle_to_print)
 {

@@ -3,7 +3,6 @@
 
 #include <memory>
 
-#include "sbuf.h"
 #include "puzzle.h"
 
 class PuzzleSolver

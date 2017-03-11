@@ -8,7 +8,6 @@
 #include "puzzle_solver.h"
 #include "puzzle.h"
 #include "node.h"
-#include "sbuf.h"
 
 PuzzleSolver::PuzzleSolver(std::shared_ptr<Puzzle> puzzle)
 {
