@@ -5,19 +5,20 @@
 
 enum nodetype
 {
-	notype,
-	path_entry,
-	path_exit,
-	path_required,
-	path_normal,
-	required_path,
-	blocked_path,
+	invalid,
+//	path_entry,
+//	path_exit,
+//	path_required,
+	path_way,			// Stright line between pathnodes
+	path_node,		// Corners and bends
+//	required_path,
+//	blocked_path,
 	face,
 	square,
-	sun,
-	triangle,
-	eliminator,
-	tetrimino
+//	sun,
+//	triangle,
+//	eliminator,
+//	tetrimino
 };
 
 enum nodecolour

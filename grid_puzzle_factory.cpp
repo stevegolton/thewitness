@@ -43,7 +43,14 @@ std::shared_ptr<Puzzle> GridPuzzleFactory::make_puzzle()
 			}
 			else
 			{
-				node->type = path_normal;
+				if((x%2 == 0) && (y%2 == 0))
+				{
+					node->type = path_node;
+				}
+				else
+				{
+					node->type = path_way;
+				}
 			}
 		}
 	}

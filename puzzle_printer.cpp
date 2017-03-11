@@ -56,8 +56,23 @@ void PuzzlePrinter::print_puzzle()
 		case face:
 			printchar = ' ';
 			break;
-		case path_normal:
+		case path_way:
+		case path_node:
 			printchar = '.';
+			break;
+		case square:
+			switch(iter->col)
+			{
+			case white:
+				printchar = 'W';
+				break;
+			case black:
+				printchar = 'B';
+				break;
+			default:
+				printchar = '?';
+				break;
+			}
 			break;
 		default:
 			printchar = '?';

@@ -6,7 +6,7 @@ Node::Node()
 	route = nullptr;
 	x = y = 0;
 	col = nocol;
-	type = notype;
+	type = invalid;
 }
 
 Node::~Node()

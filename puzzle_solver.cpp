@@ -14,12 +14,15 @@ PuzzleSolver::PuzzleSolver(std::shared_ptr<Puzzle> puzzle)
 	this->puzzle = puzzle;
 }
 
-void PuzzleSolver::find_one_solution()
+bool PuzzleSolver::find_one_solution()
 {
 	// Nothing to do
 	std::cout << "Solving the puzzle, hang onto your panties!!" << std::endl;
 
-	follow_route(puzzle->entry);
+	if(0 != follow_route(puzzle->entry))
+	{
+		return true;
+	}
 }
 
 /**
@@ -31,6 +34,8 @@ bool PuzzleSolver::validate_route()
 {
 	std::vector<Node*>::iterator iter;
 
+	//printf("Validating puzzle...\n");
+
 	// Check all the required nodes have been routed
 	for(iter = puzzle->required.begin(); iter != puzzle->required.end(); iter++)
 	{
@@ -41,12 +46,72 @@ bool PuzzleSolver::validate_route()
 		}
 	}
 
+	// Now, starting at each face type
+	std::vector<Node>::iterator node;
+
+	// Print each node in the puzzle
+	for(node = puzzle->pool.begin(); node != puzzle->pool.end(); node++)
+	{
+		if (node->type == square)
+		{
+			//printf("We found a square!\n");
+
+			// Flood fill to find more squares of this type
+			if(!find_squares(&(*node), node->col))
+			{
+				return false;
+			}
+		}
+	}
+
 	// We got to the end and there were no errors so we can assume the puzzle
 	// is valid! :)
 	return true;
 }
 
-bool PuzzleSolver::follow_route(Node *node)
+bool PuzzleSolver::find_squares(Node *node, enum nodecolour col)
+{
+	bool retval = true;
+
+	//printf("Type is %d and col is %d\n", node->type, node->col);
+
+	if((node->type == square) && (node->col != col))
+	{
+		//printf("!!Bad colour!!\n");
+		// We have a square colour mismatch... gahh
+		return false;
+	}
+
+	// Iterate over each path in the node
+	std::vector<Node*>::iterator path;
+	for (path = node->paths.begin(); path != node->paths.end(); path++)
+	{
+		//printf("Checking a path %d\n", (*path)->type);
+		if (    ((*path)->type == face)
+		     || ((*path)->type == square)
+			 || ((*path)->type == path_way))
+		{
+			//printf("Type is face or square or a pathway\n");
+			// Check node isn't already routed
+			if (!(*path)->is_routed())
+			{
+				// Yay we can route to it!
+				node->set_route(*path);
+				retval = find_squares(*path, col);
+				node->set_route(nullptr);
+
+				if(!retval)
+				{
+					break;
+				}
+			}
+		}
+	}
+
+	return retval;
+}
+
+int PuzzleSolver::follow_route(Node *node)
 {
 	int solution_count = 0;
 	int nodeidx;
@@ -67,7 +132,7 @@ bool PuzzleSolver::follow_route(Node *node)
 		// Search for non NULL and non-visited paths
 		for (path = node->paths.begin(); path != node->paths.end(); path++)
 		{
-			if ((!(*path)->is_routed()) && ((*path)->type == path_normal))
+			if ((!(*path)->is_routed()) && (((*path)->type == path_node) || ((*path)->type == path_way)))
 			{
 				// Temporarily set the route to be this this path, and
 				node->set_route(*path);
