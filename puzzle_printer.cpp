@@ -51,28 +51,28 @@ void PuzzlePrinter::print_puzzle()
 	{
 		char printchar;
 
+		if(iter->type == blank)
+			continue;
+
 		switch(iter->type)
 		{
 		case face:
 			printchar = ' ';
 			break;
-		case path_way:
 		case path_node:
 			printchar = '.';
 			break;
-		case square:
-			switch(iter->col)
-			{
-			case white:
-				printchar = 'W';
-				break;
-			case black:
-				printchar = 'B';
-				break;
-			default:
-				printchar = '?';
-				break;
-			}
+		case path_way_horizontal:
+			printchar = '-';
+			break;
+		case path_way_vertical:
+			printchar = '|';
+			break;
+		case face_square_white:
+			printchar = 'W';
+			break;
+		case face_square_black:
+			printchar = 'B';
 			break;
 		default:
 			printchar = '?';
@@ -115,8 +115,8 @@ void PuzzlePrinter::print_puzzle()
 	}
 #endif
 
-	sbuf[puzzle->entry->x + puzzle->entry->y * x_max] = 'S';
-	sbuf[puzzle->exit->x + puzzle->exit->y * x_max] = 'E';
+	sbuf[puzzle->entry->x + puzzle->entry->y * x_max] = 'O';
+	sbuf[puzzle->exit->x + puzzle->exit->y * x_max] = '`';
 
 	// Print the screen buffer to stdout
 	for(int y = 0; y < y_max; y++)

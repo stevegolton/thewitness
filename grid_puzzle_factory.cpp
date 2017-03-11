@@ -49,7 +49,7 @@ std::shared_ptr<Puzzle> GridPuzzleFactory::make_puzzle()
 				}
 				else
 				{
-					node->type = path_way;
+					node->type = path_way_vertical;
 				}
 			}
 		}

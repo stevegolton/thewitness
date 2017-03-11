@@ -52,12 +52,12 @@ bool PuzzleSolver::validate_route()
 	// Print each node in the puzzle
 	for(node = puzzle->pool.begin(); node != puzzle->pool.end(); node++)
 	{
-		if (node->type == square)
+		if (node->type == face_square_white)
 		{
 			//printf("We found a square!\n");
 
 			// Flood fill to find more squares of this type
-			if(!find_squares(&(*node), node->col))
+			if(!find_squares(&(*node), node->type))
 			{
 				return false;
 			}
@@ -69,17 +69,20 @@ bool PuzzleSolver::validate_route()
 	return true;
 }
 
-bool PuzzleSolver::find_squares(Node *node, enum nodecolour col)
+bool PuzzleSolver::find_squares(Node *node, enum nodetype type)
 {
 	bool retval = true;
 
 	//printf("Type is %d and col is %d\n", node->type, node->col);
-
-	if((node->type == square) && (node->col != col))
+	if (    (node->type == face_square_black)
+	     || (node->type == face_square_white) )
 	{
-		//printf("!!Bad colour!!\n");
-		// We have a square colour mismatch... gahh
-		return false;
+		if (node->type != type)
+		{
+			// We have a square colour mismatch... gahh
+			//printf("!!Bad colour!!\n");
+			return false;
+		}
 	}
 
 	// Iterate over each path in the node
@@ -88,8 +91,10 @@ bool PuzzleSolver::find_squares(Node *node, enum nodecolour col)
 	{
 		//printf("Checking a path %d\n", (*path)->type);
 		if (    ((*path)->type == face)
-		     || ((*path)->type == square)
-			 || ((*path)->type == path_way))
+		     || ((*path)->type == face_square_black)
+			 || ((*path)->type == face_square_white)
+			 || ((*path)->type == path_way_vertical)
+			 || ((*path)->type == path_way_horizontal))
 		{
 			//printf("Type is face or square or a pathway\n");
 			// Check node isn't already routed
@@ -97,7 +102,7 @@ bool PuzzleSolver::find_squares(Node *node, enum nodecolour col)
 			{
 				// Yay we can route to it!
 				node->set_route(*path);
-				retval = find_squares(*path, col);
+				retval = find_squares(*path, type);
 				node->set_route(nullptr);
 
 				if(!retval)
@@ -132,17 +137,26 @@ int PuzzleSolver::follow_route(Node *node)
 		// Search for non NULL and non-visited paths
 		for (path = node->paths.begin(); path != node->paths.end(); path++)
 		{
-			if ((!(*path)->is_routed()) && (((*path)->type == path_node) || ((*path)->type == path_way)))
+			// Make sure the path type is one we can access
+			if (    ((*path)->type == path_node)
+			     || ((*path)->type == path_node_entry)
+				 || ((*path)->type == path_node_exit)
+				 || ((*path)->type == path_way_vertical)
+				 || ((*path)->type == path_way_horizontal))
 			{
-				// Temporarily set the route to be this this path, and
-				node->set_route(*path);
-				solution_count += follow_route(*path);
+				// Ensure the path isn't already routed
+				if (!(*path)->is_routed())
+				{
+					// Temporarily set the route to be this this path, and
+					node->set_route(*path);
+					solution_count += follow_route(*path);
 
-				// We only need to find one
-				if (solution_count == 1) break;
+					// We only need to find one
+					if (solution_count == 1) break;
 
-				// Clear the route
-				node->set_route(nullptr);
+					// Clear the route
+					node->set_route(nullptr);
+				}
 			}
 		}
 	}

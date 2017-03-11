@@ -14,7 +14,7 @@ public:
 private:
 	bool validate_route();
 	int follow_route(Node *node);
-	bool find_squares(Node *node, enum nodecolour col);
+	bool find_squares(Node *node, enum nodetype type);
 	std::shared_ptr<Puzzle> puzzle;
 };
 

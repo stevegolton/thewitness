@@ -5,8 +5,9 @@ Node::Node()
 {
 	route = nullptr;
 	x = y = 0;
-	col = nocol;
-	type = invalid;
+	//col = nocol;
+	type = blank;
+	//more = normal;
 }
 
 Node::~Node()

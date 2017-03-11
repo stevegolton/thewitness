@@ -5,28 +5,44 @@
 
 enum nodetype
 {
-	invalid,
-//	path_entry,
-//	path_exit,
-//	path_required,
-	path_way,			// Stright line between pathnodes
-	path_node,		// Corners and bends
-//	required_path,
-//	blocked_path,
+	blank,
+	path_node,
+	path_node_required,
+	path_node_entry,
+	path_node_exit,
+	path_way_vertical,
+	path_way_horizontal,
+	path_way_required_veritcal,
+	path_way_required_horizontal,
+	path_way_blocked_vertical,
+	path_way_blocked_horizontal,
 	face,
-	square,
+	face_square_white,
+	face_square_black,
+	invalid
 //	sun,
 //	triangle,
 //	eliminator,
 //	tetrimino
 };
 
+/*
 enum nodecolour
 {
 	nocol,
 	white,
 	black
 };
+
+enum nodemisc
+{
+	normal,
+	required,
+	blocked,
+	node_entry,
+	node_exit
+};
+*/
 
 class Node
 {
@@ -46,7 +62,8 @@ public:
 
 	// Properties (TODO: Accessor functions??
 	enum nodetype type;
-	enum nodecolour col;
+	//enum nodecolour col;
+	//enum nodemisc more;
 private:
 	Node *route;
 };
