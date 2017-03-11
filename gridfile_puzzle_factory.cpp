@@ -90,6 +90,20 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				node->type = face_square_black;
 				x++;
 				break;
+			case 'X':
+				node->x = x;
+				node->y = y;
+				node->type = path_node_required;
+				puzzle->require_node(node);
+				x++;
+				break;
+			case 'x':
+				node->x = x;
+				node->y = y;
+				node->type = path_way_required_vertical; // Doesn't actually matter the orientation...
+				puzzle->require_node(node);
+				x++;
+				break;
 			case '\n':
 				y++;
 				x = 0;

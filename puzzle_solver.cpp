@@ -39,6 +39,7 @@ bool PuzzleSolver::validate_route()
 	// Check all the required nodes have been routed
 	for(iter = puzzle->required.begin(); iter != puzzle->required.end(); iter++)
 	{
+		//printf("Required\n");
 		if(false == (*iter)->is_routed())
 		{
 			// Node not routed, get out, this puzzle is bad
@@ -94,7 +95,9 @@ bool PuzzleSolver::find_squares(Node *node, enum nodetype type)
 		     || ((*path)->type == face_square_black)
 			 || ((*path)->type == face_square_white)
 			 || ((*path)->type == path_way_vertical)
-			 || ((*path)->type == path_way_horizontal))
+			 || ((*path)->type == path_way_horizontal)
+			 || ((*path)->type == path_way_required_vertical)
+			 || ((*path)->type == path_way_required_horizontal))
 		{
 			//printf("Type is face or square or a pathway\n");
 			// Check node isn't already routed
@@ -142,7 +145,10 @@ int PuzzleSolver::follow_route(Node *node)
 			     || ((*path)->type == path_node_entry)
 				 || ((*path)->type == path_node_exit)
 				 || ((*path)->type == path_way_vertical)
-				 || ((*path)->type == path_way_horizontal))
+				 || ((*path)->type == path_way_horizontal)
+				 || ((*path)->type == path_node_required)
+				 || ((*path)->type == path_way_required_vertical)
+				 || ((*path)->type == path_way_required_horizontal))
 			{
 				// Ensure the path isn't already routed
 				if (!(*path)->is_routed())

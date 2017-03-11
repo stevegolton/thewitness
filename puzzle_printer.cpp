@@ -74,6 +74,13 @@ void PuzzlePrinter::print_puzzle()
 		case face_square_black:
 			printchar = 'B';
 			break;
+		case path_way_required_vertical:
+		case path_way_required_horizontal:
+			printchar = 'x';
+			break;
+		case path_node_required:
+			printchar = 'X';
+			break;
 		default:
 			printchar = '?';
 		}

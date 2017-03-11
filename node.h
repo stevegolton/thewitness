@@ -12,7 +12,7 @@ enum nodetype
 	path_node_exit,
 	path_way_vertical,
 	path_way_horizontal,
-	path_way_required_veritcal,
+	path_way_required_vertical,
 	path_way_required_horizontal,
 	path_way_blocked_vertical,
 	path_way_blocked_horizontal,
