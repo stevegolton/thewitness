@@ -36,7 +36,7 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 			if(y > 0)             node->add_path(&puzzle->pool[(x) + (y-1)*gridsize]);
 			if(y < (gridsize-1))  node->add_path(&puzzle->pool[(x) + (y+1)*gridsize]);
 
-			printf("%d %d\n", x, y);
+			//printf("%d %d\n", x, y);
 
 			switch(c)
 			{
@@ -99,7 +99,7 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				break;
 			}
 
-			printf("node->type = %d\n", node->type);
+			//printf("node->type = %d\n", node->type);
 		}
 		fclose(file);
 	}

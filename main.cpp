@@ -8,22 +8,30 @@
 #include "gridfile_puzzle_factory.h"
 #include "puzzle_printer.h"
 
-int main(void)
+int main(int argc, char **argv)
 {
-	std::cout << "Making a puzzle" << std::endl;
+	if(argc != 2)
+	{
+		printf("Usage = %s <filename>\n", argv[0]);
+		return 1;
+	}
 
-	GridFilePuzzleFactory factory("example1");
+	std::cout << "Loading puzzle from " << argv[1] << std::endl;
+
+	GridFilePuzzleFactory factory(argv[1]);
 	std::shared_ptr<Puzzle> pzl = factory.make_puzzle();
 
-	std::cout << "Solving..." << std::endl;
-
+	std::cout << "Puzzle loaded:" << std::endl;
 	PuzzlePrinter printer1(pzl);
 	printer1.print_puzzle();
+
+	std::cout << "Solving, this may take a while..." << std::endl;
 
 	PuzzleSolver solver(pzl);
 
 	if(solver.find_one_solution())
 	{
+		std::cout << "Found a solution:" << std::endl;
 		// Print the solution
 		PuzzlePrinter printer(pzl);
 		printer.print_puzzle();

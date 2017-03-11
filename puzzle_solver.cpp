@@ -17,7 +17,7 @@ PuzzleSolver::PuzzleSolver(std::shared_ptr<Puzzle> puzzle)
 bool PuzzleSolver::find_one_solution()
 {
 	// Nothing to do
-	std::cout << "Solving the puzzle, hang onto your panties!!" << std::endl;
+	std::cout << "Solving using the brute force solver :)" << std::endl;
 
 	if(0 != follow_route(puzzle->entry))
 	{
@@ -128,7 +128,7 @@ int PuzzleSolver::follow_route(Node *node)
 		// We have reached the end node, a solution has been found, validate the solution
 		if(validate_route())
 		{
-			printf("Found a solution!\n");
+			//printf("Found a solution!\n");
 			solution_count++;
 		}
 	}
