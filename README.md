@@ -1,2 +1,2 @@
 # thewitness
-The Witness puzzle solver in C
+The Witness puzzle solver in C++
