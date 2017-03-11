@@ -46,11 +46,32 @@ void PuzzlePrinter::print_puzzle()
 	std::vector<Node>::iterator iter;
 	std::vector<Node*>::iterator required;
 
+	// Print each node in the puzzle
 	for(iter = puzzle->pool.begin(); iter != puzzle->pool.end(); iter++)
 	{
-		sbuf[iter->x + (iter->y * x_max)] = '.';
+		char printchar;
+
+		switch(iter->type)
+		{
+		case face:
+			printchar = ' ';
+			break;
+		case path_normal:
+			printchar = '.';
+			break;
+		default:
+			printchar = '?';
+		}
+
+		if(iter->is_routed())
+		{
+			printchar = 'o';
+		}
+
+		sbuf[iter->x + (iter->y * x_max)] = printchar;
 	}
 
+#if 0
 	for(required = puzzle->required.begin(); required != puzzle->required.end(); required++)
 	{
 		sbuf[(*required)->x + (*required)->y * x_max] = 'x';
@@ -62,6 +83,10 @@ void PuzzlePrinter::print_puzzle()
 	// Run through all nodes and print them to the screen buffer
 	while(printnode->is_routed())
 	{
+
+		/*
+		sbuf[xavg + yavg * x_max] = linechar;
+
 		sbuf[printnode->x + printnode->y * x_max] = 'o';
 
 		char linechar = (printnode->x == printnode->get_route()->x)? '|' : '-';
@@ -71,7 +96,9 @@ void PuzzlePrinter::print_puzzle()
 
 		// Move the print head on to the node in the route
 		printnode = printnode->get_route();
+		*/
 	}
+#endif
 
 	sbuf[puzzle->entry->x + puzzle->entry->y * x_max] = 'S';
 	sbuf[puzzle->exit->x + puzzle->exit->y * x_max] = 'E';

@@ -3,8 +3,10 @@
 
 Node::Node()
 {
-	this->route = nullptr;
-	this->x = this->y = 0;
+	route = nullptr;
+	x = y = 0;
+	col = nocol;
+	type = notype;
 }
 
 Node::~Node()
@@ -22,7 +24,7 @@ int Node::path_count()
 	return (int)paths.size();
 }
 
-void Node::set_path(Node *node)
+void Node::set_route(Node *node)
 {
 	this->route = node;
 }
@@ -30,11 +32,6 @@ void Node::set_path(Node *node)
 bool Node::is_routed()
 {
 	return (route == nullptr)? false : true;
-}
-
-void Node::set_route(Node *node)
-{
-	route = node;
 }
 
 Node *Node::get_route()

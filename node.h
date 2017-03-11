@@ -3,6 +3,30 @@
 
 #include <vector>
 
+enum nodetype
+{
+	notype,
+	path_entry,
+	path_exit,
+	path_required,
+	path_normal,
+	required_path,
+	blocked_path,
+	face,
+	square,
+	sun,
+	triangle,
+	eliminator,
+	tetrimino
+};
+
+enum nodecolour
+{
+	nocol,
+	white,
+	black
+};
+
 class Node
 {
 public:
@@ -10,13 +34,18 @@ public:
 	~Node();
 	void add_path(Node *node);
 	int path_count();
-	void set_path(Node *node);
-	bool is_routed();
+
 	void set_route(Node *node);
+	bool is_routed();
 	Node *get_route();
+
 	std::vector<Node*> paths;
 	int x;
 	int y;
+
+	// Properties (TODO: Accessor functions??
+	enum nodetype type;
+	enum nodecolour col;
 private:
 	Node *route;
 };

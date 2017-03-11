@@ -67,7 +67,7 @@ bool PuzzleSolver::follow_route(Node *node)
 		// Search for non NULL and non-visited paths
 		for (path = node->paths.begin(); path != node->paths.end(); path++)
 		{
-			if (!(*path)->is_routed())
+			if ((!(*path)->is_routed()) && ((*path)->type == path_normal))
 			{
 				// Temporarily set the route to be this this path, and
 				node->set_route(*path);
