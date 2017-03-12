@@ -16,6 +16,9 @@ private:
 	int follow_route(Node *node);
 	bool find_squares(Node *node, enum nodetype type);
 	std::shared_ptr<Puzzle> puzzle;
+	std::vector<Node*> required;
+	std::vector<Node*> squares;
+	std::vector<Node*> entrypoints;
 };
 
 #endif

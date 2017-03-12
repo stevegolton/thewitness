@@ -56,8 +56,8 @@ std::shared_ptr<Puzzle> GridPuzzleFactory::make_puzzle()
 	}
 
 	// Set the start and end nodes
-	puzzle->entry = &puzzle->pool[0];
-	puzzle->exit = &puzzle->pool[(width*height) - 1];
+	puzzle->pool[0].type = path_node_entry;
+	puzzle->pool[(width*height) - 1].type = path_node_exit;
 
 	return puzzle;
 }

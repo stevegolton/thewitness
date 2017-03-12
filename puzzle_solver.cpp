@@ -16,13 +16,43 @@ PuzzleSolver::PuzzleSolver(std::shared_ptr<Puzzle> puzzle)
 
 bool PuzzleSolver::find_one_solution()
 {
-	// Nothing to do
+	std::vector<Node>::iterator node;
 	std::cout << "Solving using the brute force solver :)" << std::endl;
 
-	if(0 != follow_route(puzzle->entry))
+	// First we prepare our puzzle for faster validation
+	for(node = puzzle->pool.begin(); node != puzzle->pool.end(); node++)
 	{
-		return true;
+		// Capture all the required nodes
+		if (    (path_way_required_vertical == node->type)
+		     || (path_way_required_horizontal == node->type)
+		     || (path_node_required == node->type))
+		{
+			required.push_back(&(*node));
+		}
+		// Capture all the square faces
+		else if (    (face_square_white == node->type)
+		          || (face_square_black == node->type))
+		{
+			squares.push_back(&(*node));
+		}
+		// Capture all entry points
+		else if (path_node_entry == node->type)
+		{
+			entrypoints.push_back(&(*node));
+		}
 	}
+
+	// Try all entry points
+	std::vector<Node*>::iterator entrypoint;
+	for(entrypoint = entrypoints.begin(); entrypoint != entrypoints.end(); entrypoint++)
+	{
+		if(0 != follow_route(*entrypoint))
+		{
+			return true;
+		}
+	}
+
+	return false;
 }
 
 /**
@@ -32,36 +62,28 @@ bool PuzzleSolver::find_one_solution()
  */
 bool PuzzleSolver::validate_route()
 {
-	std::vector<Node*>::iterator iter;
+	std::vector<Node*>::iterator node;
 
 	//printf("Validating puzzle...\n");
 
 	// Check all the required nodes have been routed
-	for(iter = puzzle->required.begin(); iter != puzzle->required.end(); iter++)
+	for(node = required.begin(); node != required.end(); node++)
 	{
 		//printf("Required\n");
-		if(false == (*iter)->is_routed())
+		if(false == (*node)->is_routed())
 		{
 			// Node not routed, get out, this puzzle is bad
 			return false;
 		}
 	}
 
-	// Now, starting at each face type
-	std::vector<Node>::iterator node;
-
 	// Print each node in the puzzle
-	for(node = puzzle->pool.begin(); node != puzzle->pool.end(); node++)
+	for(node = squares.begin(); node != squares.end(); node++)
 	{
-		if (node->type == face_square_white)
+		// Flood fill to find more squares of this type
+		if(!find_squares(*node, (*node)->type))
 		{
-			//printf("We found a square!\n");
-
-			// Flood fill to find more squares of this type
-			if(!find_squares(&(*node), node->type))
-			{
-				return false;
-			}
+			return false;
 		}
 	}
 
@@ -126,7 +148,7 @@ int PuzzleSolver::follow_route(Node *node)
 	std::vector<Node*>::iterator path;
 
 	// If we are looking at the exit node, we have a complete route
-	if(node == puzzle->exit)
+	if(path_node_exit == node->type)
 	{
 		//printf("Found a potential route, validating...\n");
 

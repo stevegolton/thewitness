@@ -44,7 +44,6 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				node->x = x;
 				node->y = y;
 				node->type = path_node_entry;
-				puzzle->entry = node; // TODO deprecate this...
 				x++;
 				break;
 			case '`':
@@ -52,7 +51,6 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				node->y = y;
 				node->type = path_node_exit;
 				x++;
-				puzzle->exit = node; // TODO deprecate this...
 				break;
 			case '|':
 				node->x = x;
@@ -94,14 +92,12 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				node->x = x;
 				node->y = y;
 				node->type = path_node_required;
-				puzzle->require_node(node);
 				x++;
 				break;
 			case 'x':
 				node->x = x;
 				node->y = y;
 				node->type = path_way_required_vertical; // Doesn't actually matter the orientation...
-				puzzle->require_node(node);
 				x++;
 				break;
 			case '\n':

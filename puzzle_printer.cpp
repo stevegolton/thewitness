@@ -81,11 +81,17 @@ void PuzzlePrinter::print_puzzle()
 		case path_node_required:
 			printchar = 'X';
 			break;
+		case path_node_entry:
+			printchar = 'O';
+			break;
+		case path_node_exit:
+			printchar = '`';
+			break;
 		default:
 			printchar = '?';
 		}
 
-		if(iter->is_routed())
+		if(iter->is_routed() && iter->type != path_node_entry)
 		{
 			printchar = 'o';
 		}
@@ -121,9 +127,6 @@ void PuzzlePrinter::print_puzzle()
 		*/
 	}
 #endif
-
-	sbuf[puzzle->entry->x + puzzle->entry->y * x_max] = 'O';
-	sbuf[puzzle->exit->x + puzzle->exit->y * x_max] = '`';
 
 	// Print the screen buffer to stdout
 	for(int y = 0; y < y_max; y++)
