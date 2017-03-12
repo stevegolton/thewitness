@@ -128,6 +128,8 @@ int PuzzleSolver::follow_route(Node *node)
 	// If we are looking at the exit node, we have a complete route
 	if(node == puzzle->exit)
 	{
+		//printf("Found a potential route, validating...\n");
+
 		// We have reached the end node, a solution has been found, validate the solution
 		if(validate_route())
 		{
@@ -141,14 +143,37 @@ int PuzzleSolver::follow_route(Node *node)
 		for (path = node->paths.begin(); path != node->paths.end(); path++)
 		{
 			// Make sure the path type is one we can access
-			if (    ((*path)->type == path_node)
-			     || ((*path)->type == path_node_entry)
-				 || ((*path)->type == path_node_exit)
-				 || ((*path)->type == path_way_vertical)
-				 || ((*path)->type == path_way_horizontal)
-				 || ((*path)->type == path_node_required)
+			if (    ((*path)->type == path_node_required)
 				 || ((*path)->type == path_way_required_vertical)
-				 || ((*path)->type == path_way_required_horizontal))
+				 || ((*path)->type == path_way_required_horizontal)
+				 || ((*path)->type == path_node_exit))
+			{
+				// Ensure the path isn't already routed
+				if (!(*path)->is_routed())
+				{
+					// Temporarily set the route to be this this path, and
+					node->set_route(*path);
+					solution_count += follow_route(*path);
+
+					// We only need to find one
+					if (solution_count == 1) break;
+
+					// Clear the route
+					node->set_route(nullptr);
+				}
+			}
+		}
+
+		if (solution_count == 1) return solution_count;
+
+		// Search for non NULL and non-visited paths
+		for (path = node->paths.begin(); path != node->paths.end(); path++)
+		{
+			// Make sure the path type is one we can access
+			if (    ((*path)->type == path_node)
+				 || ((*path)->type == path_node_entry)
+				 || ((*path)->type == path_way_vertical)
+				 || ((*path)->type == path_way_horizontal))
 			{
 				// Ensure the path isn't already routed
 				if (!(*path)->is_routed())
