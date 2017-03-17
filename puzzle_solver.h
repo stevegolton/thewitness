@@ -11,9 +11,13 @@ class PuzzleSolver
 public:
 	PuzzleSolver(std::shared_ptr<Puzzle> puzzle);
 	bool find_one_solution();
+	bool find_solutions(unsigned long solutions);
+	unsigned long validation_count;
+	unsigned long node_count;
+	unsigned long solution_count_glob;
 private:
 	bool validate_route();
-	int follow_route(Node *node);
+	unsigned long follow_route(Node *node, unsigned long solutions);
 	bool find_squares(Node *node, enum nodetype type);
 	std::shared_ptr<Puzzle> puzzle;
 	std::vector<Node*> required;

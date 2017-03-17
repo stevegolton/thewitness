@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <climits>
 
 #include "node.h"
 #include "puzzle.h"
@@ -28,10 +29,13 @@ int main(int argc, char **argv)
 	std::cout << "Solving, this may take a while..." << std::endl;
 
 	PuzzleSolver solver(pzl);
+	solver.find_solutions(LONG_MAX);
+
+	printf("%lu steps, %lu candiadates, %lu solutions\n", solver.node_count, solver.validation_count, solver.solution_count_glob);
 
 	if(solver.find_one_solution())
 	{
-		std::cout << "Found a solution:" << std::endl;
+		std::cout << "Printing just one solution:" << std::endl;
 		// Print the solution
 		PuzzlePrinter printer(pzl);
 		printer.print_puzzle();
