@@ -26,7 +26,7 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 
 	if (file)
 	{
-		while ((c = fgetc(file)) != EOF)
+		while ((c = fgetc(file)) != (char)EOF)
 		{
 			Node *node = &puzzle->pool[(x) + (y)*gridsize];
 
@@ -109,7 +109,7 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				break;
 			}
 
-			//printf("node->type = %d\n", node->type);
+			printf("node->type = %d\n", node->type);
 		}
 		fclose(file);
 	}
