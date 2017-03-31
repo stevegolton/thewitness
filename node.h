@@ -59,6 +59,7 @@ public:
 	std::vector<Node*> paths;
 	int x;
 	int y;
+	int id;
 
 	// Properties (TODO: Accessor functions??
 	enum nodetype type;

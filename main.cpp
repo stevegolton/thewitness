@@ -26,12 +26,11 @@ int main(int argc, char **argv)
 	PuzzlePrinter printer1(pzl);
 	printer1.print_puzzle();
 
-	std::cout << "Solving, this may take a while..." << std::endl;
-
 	PuzzleSolver solver(pzl);
-	solver.find_solutions(LONG_MAX);
+	std::cout << "Solving using " << solver.get_name() << std::endl;
+	solver.find_solutions(0);
 
-	printf("%lu steps, %lu candiadates, %lu solutions\n", solver.node_count, solver.validation_count, solver.solution_count_glob);
+	printf("%lu steps, %lu candidates, %lu solutions\n", solver.node_count, solver.validation_count, solver.solution_count_glob);
 
 	if(solver.find_one_solution())
 	{

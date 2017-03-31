@@ -7,6 +7,7 @@ Node::Node()
 	x = y = 0;
 	//col = nocol;
 	type = blank;
+	id = 0;
 	//more = normal;
 }
 
