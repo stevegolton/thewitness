@@ -82,10 +82,12 @@ std::string PuzzleSolver::get_name()
 
 bool PuzzleSolver::check_for_exit(Node *node)
 {
+	bool retval = false;
+
 	if(node->type == path_node_exit)
 	{
 		// We are already at an exit. No need to go on!
-		return true;
+		retval = true;
 	}
 	else
 	{
@@ -104,11 +106,15 @@ bool PuzzleSolver::check_for_exit(Node *node)
 				 || ((*path)->type == path_way_horizontal)
 				 || ((*path)->type == path_way_required_vertical)
 				 || ((*path)->type == path_way_required_horizontal)
+				 || ((*path)->type == face)
+				 || ((*path)->type == face_square_white)
+				 || ((*path)->type == face_square_black)
 				)
 			{
-				// Check node isn't already routed has already been checked
+				// Check node isn't already routed and hasn't already been checked
 				if (!(*path)->is_routed() && ((*path)->id != id))
 				{
+					//printf("Painting %d -> %d\n", (*path)->id, id);
 					// Mark the node to say it's been attacked by this flood fill
 					// operation
 					(*path)->id = id;
@@ -116,14 +122,14 @@ bool PuzzleSolver::check_for_exit(Node *node)
 					// Recurse into next node
 					if(check_for_exit(*path))
 					{
-						return true;
+						retval = true;
 					}
 				}
 			}
 		}
 	}
 
-	return false;
+	return retval;
 }
 
 /**
@@ -173,7 +179,30 @@ bool PuzzleSolver::validate_route(Node *currentNode)
 	{
 		// It is a partial one - validate partially
 		id++;
-		return check_for_exit(currentNode);
+		if(check_for_exit(currentNode))
+		{
+			//PuzzlePrinter printer(puzzle);
+			//printer.print_puzzle();
+
+			// Scan all the squares to see if they are in the completed region(s)
+			std::vector<Node*>::iterator square;
+			for(square = squares.begin(); square != squares.end(); square++)
+			{
+				if ((*square)->id != id)
+				{
+					//printf("Square does not match??\n");
+					// Flood fill to find more squares of this type
+					if(!find_squares(*square, (*square)->type))
+					{
+						return false;
+					}
+				}
+			}
+
+			return true;
+		}
+		else
+			return false;
 	}
 }
 
@@ -289,10 +318,6 @@ int PuzzleSolver::follow_route(Node *node, int solCount)
 					}
 				}
 			}
-		}
-		//else
-		{
-			// Not even worth it, just backtrack now
 		}
 	}
 
