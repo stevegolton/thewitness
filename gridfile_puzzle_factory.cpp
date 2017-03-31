@@ -109,7 +109,7 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				break;
 			}
 
-			printf("node->type = %d\n", node->type);
+			//printf("node->type = %d\n", node->type);
 		}
 		fclose(file);
 	}
