@@ -60,6 +60,7 @@ public:
 	int x;
 	int y;
 	int id;
+	int id2;
 
 	// Properties (TODO: Accessor functions??
 	enum nodetype type;

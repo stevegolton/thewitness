@@ -28,6 +28,7 @@ private:
 	std::vector<Node*> entrypoints;
 	std::vector< std::vector<Node*> > zones;
 	int id;
+	int id2;
 };
 
 #endif

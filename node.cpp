@@ -8,6 +8,7 @@ Node::Node()
 	//col = nocol;
 	type = blank;
 	id = 0;
+	id2 = 0;
 	//more = normal;
 }
 

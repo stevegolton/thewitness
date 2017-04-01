@@ -18,6 +18,7 @@ PuzzleSolver::PuzzleSolver(std::shared_ptr<Puzzle> puzzle)
 	node_count = 0;
 	solution_count_glob = 0;
 	id = 0;
+	id2 = 0;
 }
 
 bool PuzzleSolver::find_solutions(unsigned long solutions)
@@ -175,7 +176,7 @@ bool PuzzleSolver::validate_route(Node *currentNode)
 		// is valid! :)
 		return true;
 	}
-	else
+	else if((path_node == currentNode->type) || (path_node_exit == currentNode->type) || (path_node_entry == currentNode->type) || (path_node_required == currentNode->type))
 	{
 		// It is a partial one - validate partially
 		id++;
@@ -188,10 +189,12 @@ bool PuzzleSolver::validate_route(Node *currentNode)
 			std::vector<Node*>::iterator square;
 			for(square = squares.begin(); square != squares.end(); square++)
 			{
+				id2++;
 				if ((*square)->id != id)
 				{
 					//printf("Square does not match??\n");
 					// Flood fill to find more squares of this type
+
 					if(!find_squares(*square, (*square)->type))
 					{
 						return false;
@@ -203,6 +206,11 @@ bool PuzzleSolver::validate_route(Node *currentNode)
 		}
 		else
 			return false;
+	}
+	else
+	{
+		// Not a node, cannot possibly know if we're a winner
+		return true;
 	}
 }
 
@@ -236,17 +244,19 @@ bool PuzzleSolver::find_squares(Node *node, enum nodetype type)
 			 || ((*path)->type == path_way_required_horizontal))
 		{
 			//printf("Type is face or square or a pathway\n");
-			// Check node isn't already routed
-			if (!(*path)->is_routed())
+			// Check node isn't already routed and hasn't already been checked
+			if (!(*path)->is_routed() && ((*path)->id2 != id2))
 			{
-				// Yay we can route to it!
-				node->set_route(*path);
-				retval = find_squares(*path, type);
-				node->set_route(nullptr);
+				//printf("Painting %d -> %d\n", (*path)->id, id);
+				// Mark the node to say it's been attacked by this flood fill
+				// operation
+				(*path)->id2 = id2;
+				//printf("%d\n", id2);
 
-				if(!retval)
+				// Recurse into next node
+				if(!find_squares(*path, type))
 				{
-					break;
+					return false;
 				}
 			}
 		}
