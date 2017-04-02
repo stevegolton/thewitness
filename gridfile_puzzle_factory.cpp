@@ -21,6 +21,7 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 	int y = 0;
 	char c;
 	FILE * file;
+	char count = 'A';
 
 	file = fopen( filename.c_str() , "r");
 
@@ -44,12 +45,14 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				node->x = x;
 				node->y = y;
 				node->type = path_node_entry;
+				node->name = count++;
 				x++;
 				break;
 			case '`':
 				node->x = x;
 				node->y = y;
 				node->type = path_node_exit;
+				node->name = count++;
 				x++;
 				break;
 			case '|':
@@ -68,6 +71,7 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				node->x = x;
 				node->y = y;
 				node->type = path_node;
+				node->name = count++;
 				x++;
 				break;
 			case ' ':
@@ -92,6 +96,7 @@ std::shared_ptr<Puzzle> GridFilePuzzleFactory::make_puzzle()
 				node->x = x;
 				node->y = y;
 				node->type = path_node_required;
+				node->name = count++;
 				x++;
 				break;
 			case 'x':

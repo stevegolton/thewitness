@@ -9,6 +9,7 @@ Node::Node()
 	type = blank;
 	id = 0;
 	id2 = 0;
+	name = '\0';
 	//more = normal;
 }
 

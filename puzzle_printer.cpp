@@ -91,6 +91,11 @@ void PuzzlePrinter::print_puzzle()
 			printchar = '?';
 		}
 
+		if (iter->name != '\0')
+		{
+			printchar = iter->name;
+		}
+
 		if(iter->is_routed() && iter->type != path_node_entry)
 		{
 			printchar = 'o';

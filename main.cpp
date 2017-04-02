@@ -8,6 +8,7 @@
 #include "grid_puzzle_factory.h"
 #include "gridfile_puzzle_factory.h"
 #include "puzzle_printer.h"
+#include "puzzle_tree_printer.h"
 
 int main(int argc, char **argv)
 {
@@ -26,13 +27,16 @@ int main(int argc, char **argv)
 	PuzzlePrinter printer1(pzl);
 	printer1.print_puzzle();
 
+	PuzzleTreePrinter ptp(pzl);
+	printf("\n%d\n", ptp.print_tree());
+
+#if 0
 	PuzzleSolver solver(pzl);
 	std::cout << "Solving using " << solver.get_name() << std::endl;
-	solver.find_solutions(0);
+	solver.find_solutions();
+	printf("%lu steps, %lu candidates, %lu solutions\n", solver.node_count, solver.validation_count, solver.solutions_found);
 
-	printf("%lu steps, %lu candidates, %lu solutions\n", solver.node_count, solver.validation_count, solver.solution_count_glob);
-
-	if(solver.find_one_solution())
+	if(solver.find_solutions(1))
 	{
 		std::cout << "Printing just one solution:" << std::endl;
 		// Print the solution
@@ -43,4 +47,5 @@ int main(int argc, char **argv)
 	{
 		std::cout << "No solutions found... :(" << std::endl;
 	}
+#endif
 }

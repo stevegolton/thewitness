@@ -11,17 +11,17 @@ class PuzzleSolver
 {
 public:
 	PuzzleSolver(std::shared_ptr<Puzzle> puzzle);
-	bool find_one_solution();
-	bool find_solutions(unsigned long solutions);
 	std::string get_name();
+	bool find_solutions(int solutions = 0);
 	bool check_for_exit(Node *node);
 	unsigned long validation_count;
 	unsigned long node_count;
-	unsigned long solution_count_glob;
+	unsigned long solutions_found;
 private:
-	bool validate_route(Node *currentNode);
+	int flood_fill(Node *node, unsigned int type_mask, unsigned int type_count, int id);
+	bool validate_route(Node *current_node);
 	int follow_route(Node *node, int solutions);
-	bool find_squares(Node *node, enum nodetype type);
+	bool find_squares(Node *node, unsigned int type);
 	std::shared_ptr<Puzzle> puzzle;
 	std::vector<Node*> required;
 	std::vector<Node*> squares;
@@ -29,6 +29,7 @@ private:
 	std::vector< std::vector<Node*> > zones;
 	int id;
 	int id2;
+	int m_prev_zone_count;
 };
 
 #endif
