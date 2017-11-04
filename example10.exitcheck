@@ -1,0 +1,23 @@
+Loading puzzle from example10
+Puzzle loaded:
+.-.-.-.-.-`
+|W|B| | | |
+.-.-.-.-.-.
+| |W|B| | |
+.-.-.-.-.-.
+| | |W|B| |
+.-.-.-.-.-.
+| | | |W|B|
+O-.-.-.-.-.
+Solving using Brute-force solver
+946160 steps, 79384 candidates, 72 solutions
+Printing just one solution:
+.-oooooooo`
+|WoB| | | |
+.-ooo-.-.-.
+| |WoB| | |
+.-.-ooo-.-.
+| | |WoB| |
+.-.-.-ooo-.
+| | | |WoB|
+Ooooooooo-.

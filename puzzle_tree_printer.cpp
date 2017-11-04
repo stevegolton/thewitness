@@ -32,9 +32,11 @@ const unsigned int nodes = (
 PuzzleTreePrinter::PuzzleTreePrinter(std::shared_ptr<Puzzle> puzzle)
 {
 	this->puzzle = puzzle;
-	this->coloffset = 0;
-	this->flipflop_old = false;
-	this->flipflop = false;
+	this->leaf_count = 0;
+	this->leaf_count_correct = 0;
+	this->indent = 0;
+	this->newline = false;
+	this->id = 0;
 }
 
 /**
@@ -71,6 +73,27 @@ int PuzzleTreePrinter::print_tree()
 	return sol_count;
 }
 
+int PuzzleTreePrinter::flood_fill(Node *node, unsigned int type_mask, unsigned int type_count, int id)
+{
+	int step_count = 0;
+
+	if (node->type & type_count) step_count++;
+	node->id = id;
+
+	std::vector<Node*>::iterator path;
+	for (path = node->paths.begin(); path != node->paths.end(); path++)
+	{
+		//printf("Paths\n");
+		if (((*path)->type & type_mask) && ((*path)->id != id) && (!(*path)->is_routed()))
+		{
+			//printf("Availible\n");
+			step_count += flood_fill(*path, type_mask, type_count, id);
+		}
+	}
+
+	return step_count;
+}
+
 /**
  * Recursively calls itself to evaluate routes through the maze.
  *
@@ -84,11 +107,15 @@ int PuzzleTreePrinter::follow_route(Node *node)
 
 	if (nodes & node->type)
 	{
-		if (flipflop == true)
+		if(((node->paths.size() == 4))&& !flood_fill(node, (paths | nodes), path_node_exit, ++id)) return 0;
+
+		if (newline == true)
 		{
-			flipflop = false;
+			leaf_count ++;
+
+			newline = false;
 			printf("\n");
-			for(int i=0; i<coloffset-1; i++)
+			for(int i = 0; i < (indent-1); i++)
 			{
 				printf("   ");
 			}
@@ -99,7 +126,7 @@ int PuzzleTreePrinter::follow_route(Node *node)
 		if (node->type == path_node_exit)
 			search = false;
 
-		coloffset ++;
+		indent++;
 	}
 
 	if(search)
@@ -127,12 +154,13 @@ int PuzzleTreePrinter::follow_route(Node *node)
 	else
 	{
 		sol_count++;
+		leaf_count_correct++;
 	}
 
 	if (nodes & node->type)
 	{
-		flipflop = true;
-		coloffset --;
+		newline = true;
+		indent --;
 	}
 
 	return sol_count;

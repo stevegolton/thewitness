@@ -28,7 +28,10 @@ int main(int argc, char **argv)
 	printer1.print_puzzle();
 
 	PuzzleTreePrinter ptp(pzl);
-	printf("\n%d\n", ptp.print_tree());
+	ptp.print_tree();
+	printf("\n");
+	printf("leaf_count = %d\n", ptp.leaf_count);
+	printf("leaf_count_correct = %d\n", ptp.leaf_count_correct);
 
 #if 0
 	PuzzleSolver solver(pzl);
