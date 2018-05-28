@@ -44,4 +44,4 @@ cmake_install.cmake
 Makefile
 
 # Target
-solver
+build
